@@ -3,6 +3,7 @@
 namespace App\UserAccount;
 
 use App\Infrastructure\Symfony\Controller;
+use App\Infrastructure\Symfony\ExceptionListener\DomainException;
 use App\UserAccount\Token\AuthenticationTokenType;
 use App\UserAccount\Token\Token;
 use Assert\Assert;
@@ -36,26 +37,29 @@ final class RegistrationController implements Controller
     {
         $this->validateRequest($request);
 
-        $apiToken = Token::generateFor(new AuthenticationTokenType());
-
-        $this->entityManager->persist($apiToken);
-
         $user = User::register(
             $request->request->get('email'),
             $request->request->get('password'),
             $request->request->get('username'),
-            $apiToken,
             $this->passwordEncoder
         );
+        $this->entityManager->persist($user);
+
+        $apiToken = Token::generateFor($user, new AuthenticationTokenType());
+        $this->entityManager->persist($apiToken);
+
+        $user->addToken($apiToken);
 
         try {
-            $this->entityManager->persist($user);
             $this->entityManager->flush();
         } catch (UniqueConstraintViolationException $exception) {
-            throw new \DomainException('users.already_used');
+            throw new DomainException('users.already_used');
         }
 
-        return new Response($this->serializer->serialize($user, static::JSON, ['groups' => 'owner']));
+        return new Response(
+            $this->serializer->serialize($user, static::JSON, ['groups' => 'user_private']),
+            Response::HTTP_CREATED
+        );
     }
 
     private function validateRequest(Request $request): void

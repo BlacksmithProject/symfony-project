@@ -18,12 +18,19 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
 
+    App\Infrastructure\Symfony\ExceptionListener\AuthenticationExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
     App\Infrastructure\Symfony\ExceptionListener\DomainExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
 
     ## USER ##
     App\UserAccount\RegistrationController:
+        tags: ['controller.service_arguments']
+
+    App\UserAccount\AuthenticationController:
         tags: ['controller.service_arguments']
 
     App\UserAccount\UserRepository:

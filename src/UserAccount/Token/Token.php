@@ -23,21 +23,21 @@ final class Token
     /**
      * @var string
      * @ORM\Column(type="string", length=255)
-     * @Groups({"owner"})
+     * @Groups({"user_private"})
      */
     private $value;
 
     /**
      * @var \DateTimeImmutable
      * @ORM\Column(type="datetime_immutable")
-     * @Groups({"owner"})
+     * @Groups({"user_private"})
      */
     private $expireAt;
 
     /**
      * @var TokenType
      * @ORM\Column(type="string", length=255)
-     * @Groups({"owner"})
+     * @Groups({"user_private"})
      */
     private $type;
 
@@ -52,11 +52,13 @@ final class Token
     }
 
     public static function generateFor(
+        User $user,
         TokenType $tokenType,
         \DateInterval $duration = null
     ): self {
         $token = new self();
 
+        $token->user = $user;
         $token->value = static::generateTokenValue();
         $token->expireAt = (new \DateTimeImmutable())->add($duration ?? new \DateInterval('P15D'));
         $token->type = $tokenType;

@@ -3,6 +3,8 @@
 namespace App\UserAccount;
 
 use App\UserAccount\Token\Token;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use Ramsey\Uuid\UuidInterface;
@@ -24,7 +26,7 @@ final class User implements UserInterface
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
      *
-     * @Groups({"owner", "all"})
+     * @Groups({"user_private", "user_public"})
      */
     private $id;
 
@@ -32,7 +34,7 @@ final class User implements UserInterface
      * @var string
      * @ORM\Column(type="string", length=255, unique=true)
      *
-     * @Groups({"owner"})
+     * @Groups({"user_private", "user_public"})
      */
     private $email;
 
@@ -46,7 +48,7 @@ final class User implements UserInterface
      * @var string
      * @ORM\Column(type="string", length=255, unique=true)
      *
-     * @Groups({"owner", "all"})
+     * @Groups({"user_private", "user_public"})
      */
     private $name;
 
@@ -63,10 +65,10 @@ final class User implements UserInterface
     private $updatedAt;
 
     /**
-     * @var PersistentCollection
+     * @var Collection
      * @ORM\OneToMany(targetEntity="App\UserAccount\Token\Token", mappedBy="user")
      *
-     * @Groups({"owner"})
+     * @Groups({"user_private"})
      */
     private $tokens;
 
@@ -74,7 +76,6 @@ final class User implements UserInterface
         string $email,
         string $password,
         string $username,
-        Token $apiToken,
         UserPasswordEncoderInterface $passwordEncoder
     ): self {
         $user = new self();
@@ -85,8 +86,6 @@ final class User implements UserInterface
         $user->name = $username;
         $user->createdAt = $now;
         $user->updatedAt = $now;
-
-        $user->tokens[] = $apiToken;
 
         return $user;
     }
@@ -111,7 +110,7 @@ final class User implements UserInterface
         return $this->name;
     }
 
-    public function tokens(): PersistentCollection
+    public function tokens(): Collection
     {
         return $this->tokens;
     }
