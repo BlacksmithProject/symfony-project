@@ -1,8 +1,22 @@
-dev-from-scratch: composer
+dev-from-scratch: composer database
 
 composer:
 	-rm -rf ./vendor
 	-a | composer install
+
+database:
+	bin/console d:d:d --force
+	bin/console d:d:c
+	bin/console d:m:migrate --no-interaction
+
+diff:
+	bin/console d:m:diff
+
+start:
+	bin/console server:start
+
+stop:
+	bin/console server:stop
 
 pretty:
 	./vendor/bin/pretty

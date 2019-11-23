@@ -5,6 +5,27 @@ services:
         autowire: true
         autoconfigure: true
 
-    App\:
-        resource: '../src/*'
-        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+    ## SYMFONY ##
+    App\Infrastructure\Symfony\RequestListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
+
+    App\Infrastructure\Symfony\ExceptionListener\LazyAssertionExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
+    App\Infrastructure\Symfony\ExceptionListener\InvalidArgumentExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
+    App\Infrastructure\Symfony\ExceptionListener\DomainExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
+    ## USER ##
+    App\UserAccount\RegistrationController:
+        tags: ['controller.service_arguments']
+
+    App\UserAccount\UserRepository:
+
+    App\UserAccount\Token\TokenRepository:

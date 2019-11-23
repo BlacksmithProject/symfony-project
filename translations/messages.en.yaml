@@ -1,0 +1,17 @@
+data_control:
+    is_null:
+        email: "Email is mandatory"
+        password: "Password is mandatory"
+        username: "Username is mandatory"
+    is_blank:
+        email: "Email cannot be empty"
+        password: "Password cannot be empty"
+        username: "Username cannot be empty"
+    is_not_email:
+        email: "Email is invalid"
+    is_not_string:
+        password: "Password must be a string"
+        username: "Username must be a string"
+
+users:
+    already_used: "Email or Username are already used"
