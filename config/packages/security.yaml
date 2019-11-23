@@ -11,8 +11,15 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        register_and_auth:
+            pattern: ^/api/v1/(fr|en)/users
+            anonymous: true
         main:
-            anonymous: lazy
+            anonymous: false
+            logout: ~
+            guard:
+                authenticators:
+                    - App\UserAccount\ApiTokenAuthenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

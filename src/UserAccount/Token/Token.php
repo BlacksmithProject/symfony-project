@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity()
  * @ORM\Table(name="tokens")
  */
-final class Token
+class Token
 {
     /**
      * @ORM\Id
@@ -43,7 +43,7 @@ final class Token
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="App\UserAccount\User", inversedBy="tokens")
+     * @ORM\ManyToOne(targetEntity="App\UserAccount\User", inversedBy="authenticationToken")
      */
     private $user;
 
@@ -79,6 +79,16 @@ final class Token
     public function type(): string
     {
         return (string) $this->type;
+    }
+
+    public function user(): User
+    {
+        return $this->user;
+    }
+
+    public function isExpired(): bool
+    {
+        return $this->expireAt < new \DateTimeImmutable();
     }
 
     private static function generateTokenValue(int $length = 12): string

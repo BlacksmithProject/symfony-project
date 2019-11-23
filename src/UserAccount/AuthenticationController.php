@@ -5,7 +5,10 @@ namespace App\UserAccount;
 use App\Infrastructure\Symfony\Controller;
 use App\Infrastructure\Symfony\ExceptionListener\AuthenticationException;
 use App\Infrastructure\Symfony\ExceptionListener\DomainException;
+use App\UserAccount\Token\AuthenticationTokenType;
+use App\UserAccount\Token\Token;
 use Assert\Assert;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -19,15 +22,19 @@ final class AuthenticationController implements Controller
     private $passwordEncoder;
     /** @var SerializerInterface */
     private $serializer;
+    /** @var EntityManagerInterface */
+    private $entityManager;
 
     public function __construct(
         UserRepository $userRepository,
         UserPasswordEncoderInterface $passwordEncoder,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        EntityManagerInterface $entityManager
     ) {
         $this->userRepository = $userRepository;
         $this->passwordEncoder = $passwordEncoder;
         $this->serializer = $serializer;
+        $this->entityManager = $entityManager;
     }
 
     public function __invoke(Request $request)
@@ -48,8 +55,20 @@ final class AuthenticationController implements Controller
             throw new AuthenticationException('users.invalid_credentials');
         }
 
+        if ($user->authenticationToken()->isExpired()) {
+            $this->entityManager->remove($user->authenticationToken());
+
+            $authenticationToken = Token::generateFor($user, new AuthenticationTokenType());
+            $this->entityManager->persist($authenticationToken);
+
+            $user->setAuthenticationToken($authenticationToken);
+
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+        }
+
         return new Response(
-            $this->serializer->serialize($user, static::JSON, ['groups' => ['user_private', 'user_public']]),
+            $this->serializer->serialize($user, static::JSON, ['groups' => ['user_private']]),
             Response::HTTP_OK
         );
     }

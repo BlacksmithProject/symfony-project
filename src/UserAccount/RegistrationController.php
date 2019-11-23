@@ -45,10 +45,10 @@ final class RegistrationController implements Controller
         );
         $this->entityManager->persist($user);
 
-        $apiToken = Token::generateFor($user, new AuthenticationTokenType());
-        $this->entityManager->persist($apiToken);
+        $authenticationToken = Token::generateFor($user, new AuthenticationTokenType());
+        $this->entityManager->persist($authenticationToken);
 
-        $user->addToken($apiToken);
+        $user->setAuthenticationToken($authenticationToken);
 
         try {
             $this->entityManager->flush();

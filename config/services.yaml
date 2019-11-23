@@ -36,3 +36,5 @@ services:
     App\UserAccount\UserRepository:
 
     App\UserAccount\Token\TokenRepository:
+
+    App\UserAccount\ApiTokenAuthenticator:

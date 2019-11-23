@@ -11,4 +11,14 @@ final class TokenRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Token::class);
     }
+
+    public function findByValue(string $tokenValue): ?Token
+    {
+        return $this->createQueryBuilder('token')
+            ->select('token')
+            ->where('token.value = :value')
+            ->setParameter('value', $tokenValue)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

@@ -3,10 +3,7 @@
 namespace App\UserAccount;
 
 use App\UserAccount\Token\Token;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\PersistentCollection;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -16,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass="App\UserAccount\UserRepository")
  * @ORM\Table(name="users")
  */
-final class User implements UserInterface
+class User implements UserInterface
 {
     /**
      * @var UuidInterface
@@ -65,12 +62,12 @@ final class User implements UserInterface
     private $updatedAt;
 
     /**
-     * @var Collection
-     * @ORM\OneToMany(targetEntity="App\UserAccount\Token\Token", mappedBy="user")
+     * @var Token
+     * @ORM\OneToOne(targetEntity="App\UserAccount\Token\Token", mappedBy="user")
      *
      * @Groups({"user_private"})
      */
-    private $tokens;
+    private $authenticationToken;
 
     public static function register(
         string $email,
@@ -110,14 +107,14 @@ final class User implements UserInterface
         return $this->name;
     }
 
-    public function tokens(): Collection
+    public function authenticationToken(): Token
     {
-        return $this->tokens;
+        return $this->authenticationToken;
     }
 
-    public function addToken(Token $token): User
+    public function setAuthenticationToken(Token $authenticationToken): User
     {
-        $this->tokens[(string) $token->type()] = $token;
+        $this->authenticationToken = $authenticationToken;
 
         return $this;
     }

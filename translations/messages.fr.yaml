@@ -17,3 +17,4 @@ users:
     already_used: "L'email ou le nom d'utilisateur sont déjà utilisés"
     not_found: "L'utilisateur ne peut pas être trouvé"
     invalid_credentials: "Identifiants invalides"
+    invalid_token: "Token d'identification invalide"
