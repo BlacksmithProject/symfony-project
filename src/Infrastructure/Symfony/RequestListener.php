@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Symfony;
 
+use Assert\Assert;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 final class RequestListener
@@ -9,6 +10,8 @@ final class RequestListener
     public function onKernelRequest(RequestEvent $event)
     {
         $request = $event->getRequest();
+
+        Assert::that($request->getContent())->string();
 
         $data = json_decode($request->getContent(), true);
 
