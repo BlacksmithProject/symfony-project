@@ -64,22 +64,22 @@ final class RegistrationController implements Controller
 
     private function validateRequest(Request $request): void
     {
-        Assert::that($request->request->get('email'), null, 'email')->notNull('data_control.is_null.email');
-        Assert::that($request->request->get('password'), null, 'password')->notNull('data_control.is_null.password');
-        Assert::that($request->request->get('username'), null, 'username')->notNull('data_control.is_null.username');
+        Assert::that($request->request->get('email'), null, 'email')->notNull('data_control.users.is_null.email');
+        Assert::that($request->request->get('password'), null, 'password')->notNull('data_control.users.is_null.password');
+        Assert::that($request->request->get('username'), null, 'username')->notNull('data_control.users.is_null.username');
 
         Assert::lazy()
             ->that($request->request->get('email'), 'email')
-            ->notBlank('data_control.is_blank.email')
-            ->email('data_control.is_email.email')
+            ->notBlank('data_control.users.is_blank.email')
+            ->email('data_control.users.is_email.email')
 
             ->that($request->request->get('password'), 'password')
-            ->string('data_control.is_not_string.password')
-            ->notBlank('data_control.is_blank.password')
+            ->string('data_control.users.is_not_string.password')
+            ->notBlank('data_control.users.is_blank.password')
 
             ->that($request->request->get('username'), 'username')
-            ->string('data_control.is_not_string.username')
-            ->notBlank('data_control.is_blank.username')
+            ->string('data_control.users.is_not_string.username')
+            ->notBlank('data_control.users.is_blank.username')
 
             ->verifyNow();
     }

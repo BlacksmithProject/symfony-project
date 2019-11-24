@@ -85,17 +85,17 @@ final class AuthenticationController implements Controller
 
     private function validateRequest(?string $email, ?string $password): void
     {
-        Assert::that($email, null, 'email')->notNull('data_control.is_null.email');
-        Assert::that($password, null, 'password')->notNull('data_control.is_null.password');
+        Assert::that($email, null, 'email')->notNull('data_control.users.is_null.email');
+        Assert::that($password, null, 'password')->notNull('data_control.users.is_null.password');
 
         Assert::lazy()
             ->that($email, 'email')
-            ->notBlank('data_control.is_blank.email')
-            ->email('data_control.is_email.email')
+            ->notBlank('data_control.users.is_blank.email')
+            ->email('data_control.users.is_email.email')
 
             ->that($password, 'password')
-            ->string('data_control.is_not_string.password')
-            ->notBlank('data_control.is_blank.password')
+            ->string('data_control.users.is_not_string.password')
+            ->notBlank('data_control.users.is_blank.password')
 
             ->verifyNow();
     }
