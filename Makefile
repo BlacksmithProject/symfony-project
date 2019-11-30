@@ -24,8 +24,8 @@ pretty:
 pretty-fix:
 	./vendor/bin/pretty fix
 
-stan:
-	./vendor/bin/phpstan analyse -l 7 src
+psalm:
+	./vendor/bin/psalm
 
 test:
 	./vendor/bin/phpunit
