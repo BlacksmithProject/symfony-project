@@ -68,7 +68,7 @@ final class ApiTokenAuthenticator extends AbstractGuardAuthenticator
         ], JsonResponse::HTTP_UNAUTHORIZED);
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerkey)
     {
         return null;
     }

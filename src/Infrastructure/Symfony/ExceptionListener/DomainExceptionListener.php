@@ -16,7 +16,7 @@ final class DomainExceptionListener
         $this->translator = $translator;
     }
 
-    public function onKernelException(ExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event): ExceptionEvent
     {
         $exception = $event->getThrowable();
 

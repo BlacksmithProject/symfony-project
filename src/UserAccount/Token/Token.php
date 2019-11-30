@@ -14,6 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Token
 {
     /**
+     * @var integer
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")

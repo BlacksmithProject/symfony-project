@@ -37,7 +37,7 @@ final class AuthenticationController implements Controller
         $this->entityManager = $entityManager;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): Response
     {
         $decodedAuthorization = $this->getDecodedAuthorization($request);
         $email = $decodedAuthorization[0];
@@ -73,14 +73,27 @@ final class AuthenticationController implements Controller
         );
     }
 
-    private function getDecodedAuthorization(Request $request)
+    /**
+     * @return array<int, string>
+     */
+    private function getDecodedAuthorization(Request $request): array
     {
         Assert::that($request->headers->get('Authorization'), null, 'authenticationHeader')
             ->notNull('authorization.basic.missing_header');
 
         $encodedAuthorization = explode(' ', $request->headers->get('Authorization'));
 
-        return explode(':', (string) base64_decode($encodedAuthorization[1]));
+        if (!$encodedAuthorization || !isset($encodedAuthorization[1])) {
+            throw new \RuntimeException('failed to explode authorization headers');
+        }
+
+        $decodedAuthorization = explode(':', (string) base64_decode($encodedAuthorization[1]));
+
+        if (!$decodedAuthorization) {
+            throw new \RuntimeException('failed to explode encoded authorization');
+        }
+
+        return $decodedAuthorization;
     }
 
     private function validateRequest(?string $email, ?string $password): void

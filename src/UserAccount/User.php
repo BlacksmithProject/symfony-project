@@ -139,7 +139,7 @@ class User implements UserInterface
         return $this->name;
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 }
