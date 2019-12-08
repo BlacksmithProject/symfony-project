@@ -10,19 +10,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request }
 
-    App\Infrastructure\Symfony\ExceptionListener\LazyAssertionExceptionListener:
-        tags:
-            - { name: kernel.event_listener, event: kernel.exception }
-
-    App\Infrastructure\Symfony\ExceptionListener\InvalidArgumentExceptionListener:
-        tags:
-            - { name: kernel.event_listener, event: kernel.exception }
-
-    App\Infrastructure\Symfony\ExceptionListener\AuthenticationExceptionListener:
-        tags:
-            - { name: kernel.event_listener, event: kernel.exception }
-
-    App\Infrastructure\Symfony\ExceptionListener\DomainExceptionListener:
+    App\Infrastructure\Symfony\ExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
 

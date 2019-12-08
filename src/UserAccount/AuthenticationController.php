@@ -3,8 +3,8 @@
 namespace App\UserAccount;
 
 use App\Infrastructure\Symfony\Controller;
-use App\Infrastructure\Symfony\ExceptionListener\AuthenticationException;
-use App\Infrastructure\Symfony\ExceptionListener\DomainException;
+use App\Infrastructure\Symfony\Exception\AuthenticationException;
+use App\Infrastructure\Symfony\Exception\DomainException;
 use App\UserAccount\Token\AuthenticationTokenType;
 use App\UserAccount\Token\Token;
 use Assert\Assert;

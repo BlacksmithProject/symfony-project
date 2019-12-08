@@ -2,7 +2,7 @@
 
 namespace App\UserAccount;
 
-use App\Infrastructure\Symfony\ExceptionListener\AuthenticationException as AppAuthenticationException;
+use App\Infrastructure\Symfony\Exception\AuthenticationException as AppAuthenticationException;
 use App\UserAccount\Token\TokenRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
