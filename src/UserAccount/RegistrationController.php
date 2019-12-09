@@ -2,7 +2,6 @@
 
 namespace App\UserAccount;
 
-use App\Infrastructure\Symfony\Controller;
 use App\Infrastructure\Symfony\Exception\DomainException;
 use App\UserAccount\Token\AuthenticationTokenType;
 use App\UserAccount\Token\Token;
@@ -14,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
-final class RegistrationController implements Controller
+final class RegistrationController
 {
     /** @var UserPasswordEncoderInterface */
     private $passwordEncoder;
@@ -57,7 +56,7 @@ final class RegistrationController implements Controller
         }
 
         return new Response(
-            $this->serializer->serialize($user, static::JSON, ['groups' => 'user_private']),
+            $this->serializer->serialize($user, 'json', ['groups' => 'user_private']),
             Response::HTTP_CREATED
         );
     }
