@@ -1,3 +1,7 @@
+###> config ###
+/.phpunit.result.cache
+/infection.log
+###< config ###
 
 ###> symfony/framework-bundle ###
 /.env.local
@@ -8,3 +12,14 @@
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+
+###> squizlabs/php_codesniffer ###
+/.phpcs-cache
+/phpcs.xml
+###< squizlabs/php_codesniffer ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
