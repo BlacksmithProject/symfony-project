@@ -14,7 +14,7 @@ psalm:
 	./vendor/bin/psalm --show-info=true
 
 test:
-	./vendor/bin/phpunit
+	./bin/phpunit
 
 infection:
 	./vendor/bin/infection --threads=4
