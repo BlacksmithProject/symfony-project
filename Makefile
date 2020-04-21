@@ -5,7 +5,7 @@ composer:
 	-a | composer install
 
 database:
-	bin/console d:d:d --force
+	-bin/console d:d:d --force
 	bin/console d:d:c
 	bin/console d:m:migrate --no-interaction
 
